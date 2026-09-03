@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - OKX Crypto Investment Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #111827, #1f2937);
+            color: #ffffff;
+        }
+
+        nav {
+            background-color: #1f2937;
+            border-bottom: 1px solid #374151;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .logout-btn {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .container {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #9ca3af;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            border: 1px solid #3b82f6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .stat-card.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #34d399;
+        }
+
+        .stat-card.red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-color: #f87171;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #374151;
+            color: #d1d5db;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background-color: #4b5563;
+        }
+
+        .portfolio-table {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .table-header {
+            background-color: #2d3748;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 0.5fr;
+            gap: 1rem;
+            font-weight: bold;
+            border-bottom: 1px solid #374151;
+        }
+
+        .table-row {
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 0.5fr;
+            gap: 1rem;
+            align-items: center;
+            border-bottom: 1px solid #374151;
+            transition: all 0.3s ease;
+        }
+
+        .table-row:hover {
+            background-color: #374151;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .coin-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .coin-icon {
+            font-size: 1.5rem;
+        }
+
+        .coin-details {
+            flex: 1;
+        }
+
+        .coin-name {
+            font-weight: bold;
+            color: #f3f4f6;
+        }
+
+        .coin-symbol {
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+
+        .value-cell {
+            text-align: right;
+        }
+
+        .positive {
+            color: #10b981;
+        }
+
+        .negative {
+            color: #ef4444;
+        }
+
+        .sell-btn {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .sell-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #9ca3af;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .value-cell {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">OKX</div>
+        <ul class="nav-links">
+            <li><a href="/dashboard.html">Dashboard</a></li>
+            <li><a href="/invest.html">Invest</a></li>
+            <li><a href="/portfolio.html">Portfolio</a></li>
+            <li><a href="/learning.html">Learning</a></li>
+            <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>My Portfolio</h1>
+            <p>Manage and track all your investments</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Invested</div>
+                <div class="stat-value">$5,250.00</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Value</div>
+                <div class="stat-value">$6,890.50</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-label">Total Profit/Loss</div>
+                <div class="stat-value">+$1,640.50</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterPortfolio('active')">Active</button>
+            <button class="filter-btn" onclick="filterPortfolio('sold')">Sold</button>
+            <button class="filter-btn" onclick="filterPortfolio('all')">All</button>
+        </div>
+
+        <div class="portfolio-table">
+            <div class="table-header">
+                <div>Cryptocurrency</div>
+                <div style="text-align: right;">Amount Invested</div>
+                <div style="text-align: right;">Current Value</div>
+                <div style="text-align: right;">Profit/Loss</div>
+                <div style="text-align: right;">Purchase Date</div>
+                <div style="text-align: center;">Action</div>
+            </div>
+
+            <div id="portfolioContent">
+                <!-- Portfolio items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const portfolio = [
+            { name: 'Bitcoin', symbol: 'BTC', icon: '₿', invested: 2150, current: 2410, purchaseDate: '2024-01-15', status: 'active' },
+            { name: 'Ethereum', symbol: 'ETH', icon: '◆', invested: 1875, current: 2020, purchaseDate: '2024-02-20', status: 'active' },
+            { name: 'Ripple', symbol: 'XRP', icon: '✕', invested: 285.50, current: 300, purchaseDate: '2024-03-10', status: 'active' },
+            { name: 'Litecoin', symbol: 'LTC', icon: 'Ł', invested: 940, current: 160, purchaseDate: '2024-01-05', status: 'sold' },
+        ];
+
+        function renderPortfolio(filter = 'active') {
+            const content = document.getElementById('portfolioContent');
+            const filtered = filter === 'all' ? portfolio : portfolio.filter(p => p.status === filter);
+
+            if (filtered.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p>No ${filter} investments yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            content.innerHTML = filtered.map(item => {
+                const profit = item.current - item.invested;
+                const profitPercent = ((profit / item.invested) * 100).toFixed(2);
+                const isPositive = profit >= 0;
+
+                return `
+                    <div class="table-row">
+                        <div class="coin-cell">
+                            <div class="coin-icon">${item.icon}</div>
+                            <div class="coin-details">
+                                <div class="coin-name">${item.name}</div>
+                                <div class="coin-symbol">${item.symbol}</div>
+                            </div>
+                        </div>
+                        <div class="value-cell">$${item.invested.toFixed(2)}</div>
+                        <div class="value-cell">$${item.current.toFixed(2)}</div>
+                        <div class="value-cell ${isPositive ? 'positive' : 'negative'}">
+                            ${isPositive ? '+' : ''}$${profit.toFixed(2)} (${isPositive ? '+' : ''}${profitPercent}%)
+                        </div>
+                        <div class="value-cell">${item.purchaseDate}</div>
+                        <div style="text-align: center;">
+                            ${item.status === 'active' ? 
+                                `<button class="sell-btn" onclick="sellInvestment('${item.name}')">Sell</button>` : 
+                                `<span style="color: #10b981; font-size: 0.75rem;">Sold</span>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterPortfolio(filter) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderPortfolio(filter);
+        }
+
+        function sellInvestment(name) {
+            if (confirm(`Are you sure you want to sell your ${name}?`)) {
+                alert(`${name} has been sold successfully!`);
+                // Update portfolio
+                const item = portfolio.find(p => p.name === name);
+                if (item) item.status = 'sold';
+                renderPortfolio('active');
+            }
+        }
+
+        // Check authentication
+        window.addEventListener('load', function() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!user.firstName) {
+                window.location.href = '/login.html';
+            }
+            renderPortfolio();
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/index.html';
+        }
+    </script>
+</body>
+</html>
